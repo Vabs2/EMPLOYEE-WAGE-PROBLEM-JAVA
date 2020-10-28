@@ -4,7 +4,7 @@ public class EmployeeWageProblem
 	{
 		int checkNumber=(int)(Math.floor(Math.random()*10)%3);
 		int salary=0, IS_PRESENT=1,WAGE_PER_HOUR=20,FULL_DAY_HOUR=8;
-		final int IS_FULLTIME=1, IS_PARTTIME=2;
+		final int IS_FULLTIME=1, IS_PARTTIME=2, NOOFDAYS=20;
 		int empHours=0;
 		if ( checkNumber == IS_PRESENT )
 		{
@@ -37,6 +37,10 @@ public class EmployeeWageProblem
 		salary=empHours*WAGE_PER_HOUR;
 		System.out.println("Salary of Employee is.."+salary);*/
 
+		int totalSalary=0;
+      		for ( int i=0; i<NOOFDAYS; i++ )
+      		{
+
 		switch (checkNumber)
    	 	{
    	 	case IS_FULLTIME:
@@ -52,8 +56,13 @@ public class EmployeeWageProblem
  	        	empHours=0;
  	        	break;
  	 	}
+
       		salary=empHours*WAGE_PER_HOUR;
-      		System.out.println("Salary of Employee is.."+salary);
+      		System.out.println("Salary of Employee is.." + salary);
+
+		totalSalary=totalSalary+salary;
+		}
+		System.out.println("ToTal Salary of Employee is.." + totalSalary);
 
 	}
 }
