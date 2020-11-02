@@ -1,27 +1,52 @@
 import java.util.Random;
 
-class EmployeeWageBuilder{
-    private final String company;
-    private final int wagePerHour;
-    private final int workingDays;
-    private final int maxMonthHours;
-    private int totalMonthlyWage;
+class CompanyEmployeeWage{
+    public final String company;
+    public final int wagePerHour;
+    public final int workingDays;
+    public final int maxMonthHours;
+    public int totalMonthlyWage;
 
-    EmployeeWageBuilder(String company, int wagePerHour, int workingDays, int maxMonthHours) {
+    public CompanyEmployeeWage(String company, int wagePerHour, int workingDays, int maxMonthHours) {
         this.company = company;
         this.wagePerHour = wagePerHour;
         this.workingDays = workingDays;
         this.maxMonthHours = maxMonthHours;
-
     }
+    public void setTotalMonthlyWage(int totalMonthlyWage){
+        this.totalMonthlyWage=totalMonthlyWage;
+    }
+    @Override
+    public String toString(){
+        return "Total employee Wage for " + company + " is : "+ totalMonthlyWage;
+    }
+}
+class EmployeeWageBuilderArray{
 
-    public void totalWage() {
+    private int numOfCompany=0;
+    private CompanyEmployeeWage[] EmployeeWageBuilderArray;
 
-        int totalWorkingHours=0, fullDayHours=8, halfDayHours=4;
-        for (int i=0; i<workingDays; i++) {
+    public EmployeeWageBuilderArray() {
+        EmployeeWageBuilderArray = new CompanyEmployeeWage[5];
+    }
+    void addEmployeeWageBuilder(String company, int wagePerhour, int workingDays, int maxMonthHours){
+        EmployeeWageBuilderArray[numOfCompany] = new CompanyEmployeeWage(company, wagePerhour, workingDays,maxMonthHours);
+        numOfCompany++;
+    }
+    void totalWage(){
+        for (int i=0; i<numOfCompany; i++){
+            EmployeeWageBuilderArray[i].setTotalMonthlyWage(this.totalWage(EmployeeWageBuilderArray[i]));
+            System.out.println(EmployeeWageBuilderArray[i]);
+        }
+    }
+    private int totalWage(CompanyEmployeeWage companyEmployeeWage) {
+
+        int totalMonthlyWage=0,totalWorkingHours=0, fullDayHours=8, halfDayHours=4;
+        for (int i=0; i<companyEmployeeWage.workingDays; i++) {
 
             Random ran = new Random();
             int ran1 = ran.nextInt(3);
+
 
             if (ran1 == 0) {
                 totalWorkingHours += fullDayHours;
@@ -31,31 +56,23 @@ class EmployeeWageBuilder{
                 totalWorkingHours += 0;
             }
 
-            if (totalWorkingHours > maxMonthHours) {
-                totalWorkingHours = maxMonthHours;
+            if (totalWorkingHours > companyEmployeeWage.maxMonthHours) {
+                totalWorkingHours = companyEmployeeWage.maxMonthHours;
                 break;
             }
         }
 
-        totalMonthlyWage=totalWorkingHours * wagePerHour;
-    }
-    @Override
-    public String toString(){
-        return "Total employee Wage for " + company + " is : "+ totalMonthlyWage;
+        return totalMonthlyWage=totalWorkingHours * companyEmployeeWage.wagePerHour;
     }
 }
 
 public class EmployeeWageComputation {
-
     public static void main(String[] args) {
         System.out.println("Welcome To Employee Wage Computation");
         System.out.println("====================================");
-        EmployeeWageBuilder company1 = new EmployeeWageBuilder("First Company",20,20,100);
-        company1.totalWage();
-        System.out.println(company1);
-        System.out.println("---------------------------------------");
-        EmployeeWageBuilder company2 = new EmployeeWageBuilder("Second Company", 25,25, 120);
-        company2.totalWage();
-        System.out.println(company2);
+        EmployeeWageBuilderArray employeeWageBuilderArray = new EmployeeWageBuilderArray();
+        employeeWageBuilderArray.addEmployeeWageBuilder("First Company",20,20,100);
+        employeeWageBuilderArray.addEmployeeWageBuilder("Second Company", 25,25, 120);
+        employeeWageBuilderArray.totalWage();
     }
 }
